@@ -30,6 +30,17 @@ class Eye {
         ctx.fill();
         ctx.closePath();
         //draw iris
+        let iris_dx = mouse.x - this.x;
+        let iris_dy = mouse.y - this.y;
+        theta = Math.atan2(iris_dy, iris_dx);
+        let iris_x = this.x + Math.cos(theta) * this.radius/10;
+        let iris_y = this.y + Math.sin(theta) * this.radius/10;
+        let irisRadius = this.radius / 1.2;
+        ctx.beginPath();
+        ctx.arc(iris_x, iris_y, irisRadius, 0, Math.PI * 2, true);
+        ctx.fillStyle = "white";
+        ctx.fill();
+        ctx.closePath();
 
         //draw pupil
 
@@ -45,15 +56,31 @@ class Eye {
 }
 function init(){
     eyes = [];
-    let numberOfEyes = 50;
+    let overlapping = false;
+    let numberOfEyes = 200;
+    let protection = 10000;
+    let counter = 0;
 
-    for (let i = 0; i < numberOfEyes; i++){
+    while (eyes.length < numberOfEyes && counter < protection) {
         let eye = {
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
             radius: Math.floor(Math.random() * 100) + 5
         }
-        eyes.push(new Eye(eye.x, eye.y, eye.radius));
+        overlapping = false;
+        for (let i = 0; i < eyes.length; i++){
+            let previousEye = eyes[i];
+            let dx = eye.x - previousEye.x;
+            let dy = eye.y - previousEye.y;
+            let distance = Math.sqrt(dx*dx + dy*dy);
+            if (distance < (eye.radius + previousEye.radius)){
+                overlapping = true;
+                break;
+            }
+        }
+        if (!overlapping) {
+            eyes.push(new Eye(eye.x, eye.y, eye.radius));
+        }
     }
 }
 function animate(){
@@ -67,3 +94,8 @@ function animate(){
 init();
 animate();
 
+window.addEventListener("resize", function(){
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+    init();
+})
