@@ -39,12 +39,13 @@ class Eye {
         ctx.beginPath();
         ctx.arc(mouse.x, mouse.y, 25, 0, Math.PI * 2, true);
         ctx.fillStyle = "gold";
+        ctx.fill();
         ctx.closePath();
     }
 }
 function init(){
     eyes = [];
-    let numberOfEyes = 200;
+    let numberOfEyes = 50;
 
     for (let i = 0; i < numberOfEyes; i++){
         let eye = {
