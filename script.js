@@ -29,23 +29,23 @@ class Eye {
         ctx.fillStyle = "red";
         ctx.fill();
         ctx.closePath();
+
+        //get angle
+        let dx = mouse.x - this.x;
+        let dy = mouse.y - this.y;
+        theta = Math.atan2(dy, dx);
+
         //draw iris
-        let iris_dx = mouse.x - this.x;
-        let iris_dy = mouse.y - this.y;
-        theta = Math.atan2(iris_dy, iris_dx);
         let iris_x = this.x + Math.cos(theta) * this.radius/10;
         let iris_y = this.y + Math.sin(theta) * this.radius/10;
         let irisRadius = this.radius / 1.2;
-
         ctx.beginPath();
         ctx.arc(iris_x, iris_y, irisRadius, 0, Math.PI * 2, true);
         ctx.fillStyle = "white";
         ctx.fill();
         ctx.closePath();
+
         //draw pupil
-        let pupil_dx = mouse.x -this.x;
-        let pupil_dy = mouse.y - this.y;
-        theta = Math.atan2(pupil_dy,pupil_dx);
         let pupilRadius = this.radius / 2.5;
         let pupil_x = this.x + Math.cos(theta) * this.radius/1.9;
         let pupil_y = this.y + Math.sin(theta) * this.radius/1.9;
@@ -57,6 +57,11 @@ class Eye {
         ctx.closePath();
         
         //draw pupil reflection
+        ctx.beginPath();
+        ctx.arc(pupil_x-pupilRadius/3, pupil_y-pupilRadius/3, pupilRadius/2, 0, Math.PI * 2, true);
+        ctx.fillStyle = "rgba(255,255,255,.1)";
+        ctx.fill();
+        ctx.closePath();
 
         //draw mouse
         ctx.beginPath();
@@ -93,6 +98,7 @@ function init(){
         if (!overlapping) {
             eyes.push(new Eye(eye.x, eye.y, eye.radius));
         }
+        counter++;
     }
 }
 function animate(){
