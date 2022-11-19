@@ -1,1 +1,2 @@
-# eyeTest
+# JavaScript Eyeball animation
+this is a small application that only uses html, css, and javascript. Javascript is the the main backbone of the application. Everything rendered in the app was built using JS. will be attaching videos soon on how to build the applications.
